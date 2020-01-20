@@ -15,7 +15,7 @@ OUTPUT=vm
 .PHONY: run
 .PHONY: clean
 
-$(OUTPUT): $(OBJECTS)
+$(OUTPUT): | $(OBJDIR) $(OBJECTS)
 	$(CC) $(LDFLAGS) $@ $(OBJECTS)
 
 objects/vm.o: src/vm.c $(HEADERS)
@@ -26,6 +26,9 @@ objects/instructions.o: src/instructions.c $(HEADERS)
 
 objects/cpu.o: src/cpu.c $(HEADERS)
 	$(CC) $(CFLAGS) $@ src/cpu.c
+
+$(OBJDIR):
+	mkdir $@
 
 translate: src/cpu.c
 	$(CC) $(TFLAGS) src/cpu.c -o asm.vm
