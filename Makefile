@@ -1,4 +1,3 @@
-
 OBJDIR=objects/
 SRCDIR=src/
 HDRDIR=include/
