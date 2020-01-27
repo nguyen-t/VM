@@ -9,6 +9,7 @@ A very basic 16-bit RISC processor simulation written entirely in C11 without th
 ## Planned Functionality
 > Stack</br>
 > Floating-point operations</br>
+> Big endian byte order compatibility
 > Memory-mapped I/O</br>
 > Interrupts</br>
 > Protection for certain registers (e.g. IP)</br>
@@ -27,7 +28,7 @@ M-Type = [15...9][8...6][5...0]        = [OPCODE][REGISTER][IMMEDIATE]
 R-Type = [15...9][8...6][5...3][2...0] = [OPCODE][REGISTER][REGISTER][REGISTER]
 
 INSTRUCTION SET
-OPCODE  OP  INPUTS               DESCRIPTION
+OPCODE  OP  INPUTS                 DESCRIPTION
 0000000 hlt [NONE]               = stops the processor
 
 0100000 jpr [NONE]               = jumps to absolute address at register [AC]
