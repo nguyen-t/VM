@@ -69,7 +69,6 @@ void run(CPU* cpu, int repeats) {
   for(int i = 0; i < repeats; i++) {
     tick(cpu);
     printRegisters(cpu);
-    printAddressByte(cpu, 0x00FF, 0x0100);
   }
 }
 
@@ -86,6 +85,6 @@ int main(int argc, char** argv) {
   map_instructions(&cpu);
   translate(argv[1], code, length);
   boot(&cpu, code, length);
-  printAddressByte(&cpu, 0x0000, 0x000C);
+  printAddressByte(&cpu, 0x0000, (length * 2) - 1);
   run(&cpu, 25);
 }
