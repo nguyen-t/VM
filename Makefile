@@ -8,7 +8,6 @@ TEST=test/store.txt
 CC=gcc
 CFLAGS=-c -Werror -Wextra -I$(HDRDIR) -o
 LDFLAGS=-I$(HDRDIR) -o
-TFLAGS=-I$(HDRDIR) -E
 OUTPUT=vm
 
 .PHONY: run
@@ -28,9 +27,6 @@ objects/cpu.o: src/cpu.c $(HEADERS)
 
 $(OBJDIR):
 	mkdir $@
-
-translate: src/cpu.c
-	$(CC) $(TFLAGS) src/cpu.c -o asm.vm
 
 run: $(OUTPUT)
 	./$(OUTPUT) $(TEST) $(shell wc -l < $(TEST))
