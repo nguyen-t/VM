@@ -23,7 +23,7 @@ void printRegisters(CPU* cpu) {
 
 void printAddressByte(CPU* cpu, u_word start, u_word end) {
   for(u_word i = start; i <= end; i++) {
-    printf("0x%04X:\t0x%04X\n", i, read_adr(cpu, i, 1));
+    printf("0x%04X:\t0x%02X\n", i, cpu->address[i]);
   }
   printf("\n");
 }
@@ -69,6 +69,7 @@ void run(CPU* cpu, int repeats) {
   for(int i = 0; i < repeats; i++) {
     tick(cpu);
     printRegisters(cpu);
+    printAddressByte(cpu, 0x00FF, 0x0100);
   }
 }
 
@@ -85,5 +86,6 @@ int main(int argc, char** argv) {
   map_instructions(&cpu);
   translate(argv[1], code, length);
   boot(&cpu, code, length);
+  printAddressByte(&cpu, 0x0000, 0x000C);
   run(&cpu, 25);
 }

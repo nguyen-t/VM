@@ -21,40 +21,26 @@ void boot(CPU* cpu, const u_word* code, const u_word length) {
 }
 
 u_word read_reg(CPU* cpu, const CPU_REGISTER reg) {
-  u_word start = sizeof(u_word) * reg + (sizeof(u_word) - 1);
-  u_word data = 0;
-
-  for(u_word i = 0; i < sizeof(u_word); i++) {
-    data |= cpu->registers[start - i] << (8 * i);
-  }
-
-  return data;
+  return cpu->registers[reg];
 }
 
 void write_reg(CPU* cpu, const CPU_REGISTER reg, const u_word data) {
-  u_word start = sizeof(u_word) * reg + (sizeof(u_word) - 1);
-
-  for(u_word i = 0; i < sizeof(u_word); i++) {
-    cpu->registers[start - i] = (data >> (8 * i)) & 0xFF; // Shifts i-bytes then get last byte
-  }
+  cpu->registers[reg] = data;
 }
 
 u_word read_adr(CPU* cpu, const u_word address, const u_byte bytes) {
-  u_word start = sizeof(u_word) * address + (sizeof(u_word) - 1);
   u_word data = 0;
 
   for(u_word i = 0; i < bytes || i < sizeof(u_word); i++) {
-    data |= cpu->memory[start - i] << (8 * i);
+    data |= cpu->address[address + i] << (8 * i);
   }
 
   return data;
 }
 
 void write_adr(CPU* cpu, const u_word address, const u_word data, const u_byte bytes) {
-  u_word start = sizeof(u_word) * address + (sizeof(u_word) - 1);
-
   for(u_word i = 0; i < bytes || i < sizeof(u_word); i++) {
-    cpu->memory[start - i] = (data >> (8 * i)) & 0xFF; // Shifts i-bytes then get last byte
+    cpu->address[address + i] = (data >> (8 * i)) & 0x00FF;
   }
 }
 
