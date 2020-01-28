@@ -5,6 +5,10 @@
 #define NULL (void*) 0
 #endif
 
+#ifndef STACK
+#define STACK 0xFFFFu
+#endif
+
 typedef signed char byte;
 typedef signed short word;
 typedef unsigned char u_byte;
@@ -15,7 +19,7 @@ typedef struct cpu CPU;
 typedef void (*INSTRUCTION)(CPU*, const I_FORMAT*);
 
 enum cpu_register { // IP, FL, SP are protected from direct access
-  IP, FL, SP, AC, // Special purpose registers
+  IP, FL, SP, AD, // Special purpose registers
   R0, R1, R2, R3 // General purpose registers
 };
 
@@ -24,14 +28,14 @@ union i_format {
 
   /* Unused instruction format (opcode 0XXXXXX) */
   struct {
-    u_word unused: 9; // Bytes[0..8] = unused
+    u_word extra: 9; // Bytes[0..8] = unused
     u_word opcode: 7; // Bytes[9..15] = opcode
   } s_type;
 
   /* Immediate-type instruction format (opcode 0XXXXXX) */
   struct {
     u_word immv: 8; // Bytes[0..7] = register
-    u_word unused: 1; // Bytes[8..8] = register
+    u_word extra: 1; // Bytes[8..8] = register
     u_word opcode: 7; // Bytes[9..15] = opcode
   } i_type;
 

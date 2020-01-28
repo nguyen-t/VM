@@ -1,15 +1,17 @@
 #include "cpu.h"
 
 void cpu_reset(CPU* cpu) {
-  for(int i = 0; i <= 0xFFFF; i++) {
+  for(unsigned int i = 0; i <= 0xFFFFu; i++) {
     write_adr(cpu, i, 0, 1);
   }
-  for(int i = 0; i < 8; i++) {
+  for(unsigned int i = 0; i < 8; i++) {
     write_reg(cpu, i, 0);
   }
-  for(int i = 0; i < 128; i++) {
+  for(unsigned int i = 0; i < 128; i++) {
     cpu->instructions[i] = NULL;
   }
+
+  write_reg(cpu, SP, STACK);
 }
 
 void boot(CPU* cpu, const u_word* code, const u_word length) {
@@ -40,7 +42,7 @@ u_word read_adr(CPU* cpu, const u_word address, const u_byte bytes) {
 
 void write_adr(CPU* cpu, const u_word address, const u_word data, const u_byte bytes) {
   for(u_word i = 0; i < bytes || i < sizeof(u_word); i++) {
-    cpu->address[address + i] = (data >> (8 * i)) & 0x00FF;
+    cpu->address[address + i] = (data >> (8 * i)) & 0x00FFu;
   }
 }
 

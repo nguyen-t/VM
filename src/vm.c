@@ -12,7 +12,7 @@ void printCode(u_word* code, u_word length) {
 void printRegisters(CPU* cpu) {
   printf("IP:\t0x%04X\n", read_reg(cpu, IP));
   printf("FL:\t0x%04X\n", read_reg(cpu, FL));
-  printf("AC:\t0x%04X\n", read_reg(cpu, AC));
+  printf("AD:\t0x%04X\n", read_reg(cpu, AD));
   printf("SP:\t0x%04X\n", read_reg(cpu, SP));
   printf("R0:\t0x%04X\n", read_reg(cpu, R0));
   printf("R1:\t0x%04X\n", read_reg(cpu, R1));

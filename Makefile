@@ -17,7 +17,7 @@ $(OUTPUT): | $(OBJDIR) $(OBJECTS)
 	$(CC) $(LDFLAGS) $@ $(OBJECTS)
 
 objects/vm.o: src/vm.c $(HEADERS)
-	$(CC) $(CFLAGS) $@ src/vm.c
+	$(CC) $(CFLAGS) $@ $(OBJECTS) src/vm.c
 
 objects/instructions.o: src/instructions.c $(HEADERS)
 	$(CC) $(CFLAGS) $@ src/instructions.c
