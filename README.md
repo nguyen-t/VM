@@ -8,14 +8,14 @@ A very basic 16-bit RISC processor simulation written entirely in C11 without th
 
 ## Planned Updates
 > Stack</br>
-> Changes to jump/branch functionality
+> Changes to jump/branch functionality</br>
 > Floating-point operations</br>
-> Big endian byte order compatibility
+> Big endian byte order compatibility</br>
 > Memory-mapped I/O</br>
 > Interrupts</br>
 > Protection for certain registers (e.g. IP)</br>
 > More instructions</br>
-> Assembler
+> Assembler</br>
 
 ## Reference
 ```
