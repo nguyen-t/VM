@@ -1,12 +1,12 @@
-OBJDIR=objects
-SRCDIR=src
 HDRDIR=include
+SRCDIR=src
+OBJDIR=objects
 TSTDIR=test
-INPUTS=$(basename $(shell ls $(SRCDIR)))
 DEPS=$(basename $(shell ls $(HDRDIR)))
-OBJECTS=$(addprefix $(OBJDIR)/, $(addsuffix .o, $(INPUTS)))
-SOURCES=$(addprefix $(SRCDIR)/, $(addsuffix .c, $(INPUTS)))
+INPUTS=$(basename $(shell ls $(SRCDIR)))
 HEADERS=$(addprefix $(HDRDIR)/, $(addsuffix .h, $(DEPS)))
+SOURCES=$(addprefix $(SRCDIR)/, $(addsuffix .c, $(INPUTS)))
+OBJECTS=$(addprefix $(OBJDIR)/, $(addsuffix .o, $(INPUTS)))
 CC=gcc
 CFLAGS=-c -Werror -Wextra -I$(HDRDIR) -o
 LDFLAGS=-I$(HDRDIR) -o
@@ -17,7 +17,7 @@ ARGS=$(shell wc -l test/store.txt)
 .PHONY: clean
 .PHONY: all
 
-all: | $(OBJDIR) $(SRCDIR) $(HDRDIR) $(TSTDIR) $(OUTPUT)
+all: | $(HDRDIR) $(SRCDIR) $(OBJDIR) $(TSTDIR) $(OUTPUT)
 
 run: $(OUTPUT)
 	./$(OUTPUT) $(TEST) $(ARGS)
@@ -31,14 +31,5 @@ $(OUTPUT): $(OBJECTS)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $@ $<
 
-$(OBJDIR):
-	mkdir $@
-
-$(SRCDIR):
-	mkdir $@
-
-$(HDRDIR):
-	mkdir $@
-
-$(TSTDIR):
+$(HDRDIR) $(SRCDIR) $(OBJDIR) $(TSTDIR): % :
 	mkdir $@
