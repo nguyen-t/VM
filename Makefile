@@ -16,7 +16,7 @@ OUTPUT=vm
 .PHONY: clean
 .PHONY: all
 
-all: | $(OBJDIR) $(OUTPUT)
+all: | $(OBJDIR) $(SRCDIR) $(HDRDIR) $(OUTPUT)
 
 run: $(OUTPUT)
 	./$(OUTPUT) $(TEST) $(shell wc -l < $(TEST))
@@ -31,4 +31,10 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $@ $<
 
 $(OBJDIR):
+	mkdir $@
+
+$(SRCDIR):
+	mkdir $@
+
+$(HDRDIR):
 	mkdir $@
