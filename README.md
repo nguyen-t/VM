@@ -7,7 +7,6 @@ Inspired by the Low Level JavaScript YouTube Channel: https://www.youtube.com/ch
 A very basic 16-bit RISC processor simulation written entirely in C11 without the use of a standard library. The CPU itself is little endian, and runs on little endian machines, it is unknown if it will work properly on big endian machines. The "vm" that drives it does use the ANSI C standard library. The CPU instructions, and word-size can be easily modified. The CPU does NOT support instruction pipelining.
 
 ## Planned Updates
-> Stack</br>
 > Changes to jump/branch functionality</br>
 > Floating-point operations</br>
 > Big endian byte order compatibility</br>
