@@ -23,7 +23,7 @@ run: $(OUTPUT)
 	./$(OUTPUT) $(TEST) $(ARGS)
 
 clean:
-	rm -r $(OBJECTS) $(OUTPUT)
+	rm $(OBJECTS) $(OUTPUT)
 
 $(OUTPUT): $(OBJECTS)
 	$(CC) $(LDFLAGS) $@ $^
