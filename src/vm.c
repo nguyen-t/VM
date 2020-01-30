@@ -3,12 +3,6 @@
 #include "cpu.h"
 #include "instructions.h"
 
-void printCode(u_word* code, u_word length) {
-  for(int i = 0; i < length; i++) {
-    printf("0x%04X\n", code[i]);
-  }
-}
-
 void printRegisters(CPU* cpu) {
   printf("AD:\t0x%04X\n", read_reg(cpu, AD));
   printf("RT:\t0x%04X\n", read_reg(cpu, RT));
