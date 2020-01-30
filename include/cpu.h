@@ -6,7 +6,7 @@
 #endif
 
 #ifndef STACK
-#define STACK 0xFFFFu
+#define STACK 0xFFFEu
 #endif
 
 typedef signed char byte;
@@ -18,9 +18,11 @@ typedef union i_format I_FORMAT;
 typedef struct cpu CPU;
 typedef void (*INSTRUCTION)(CPU*, const I_FORMAT*);
 
-enum cpu_register { // IP, FL, SP are protected from direct access
-  IP, FL, SP, AD, // Special purpose registers
-  R0, R1, R2, R3 // General purpose registers
+enum cpu_register {
+  AD, RT, // Special purpose registers
+  R0, R1, R2, // General purpose registers
+  R3, R4, R5, // General purpose registers
+  IP, FL, SP // Special purpose registers, inaccessible
 };
 
 union i_format {
@@ -57,7 +59,7 @@ union i_format {
 
 struct cpu {
   u_byte address[65536];
-  u_word registers[8];
+  u_word registers[11];
   INSTRUCTION instructions[128];
 };
 

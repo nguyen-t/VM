@@ -10,14 +10,17 @@ void printCode(u_word* code, u_word length) {
 }
 
 void printRegisters(CPU* cpu) {
-  printf("IP:\t0x%04X\n", read_reg(cpu, IP));
-  printf("FL:\t0x%04X\n", read_reg(cpu, FL));
   printf("AD:\t0x%04X\n", read_reg(cpu, AD));
-  printf("SP:\t0x%04X\n", read_reg(cpu, SP));
+  printf("RT:\t0x%04X\n", read_reg(cpu, RT));
   printf("R0:\t0x%04X\n", read_reg(cpu, R0));
   printf("R1:\t0x%04X\n", read_reg(cpu, R1));
   printf("R2:\t0x%04X\n", read_reg(cpu, R2));
   printf("R3:\t0x%04X\n", read_reg(cpu, R3));
+  printf("R4:\t0x%04X\n", read_reg(cpu, R4));
+  printf("R5:\t0x%04X\n", read_reg(cpu, R5));
+  printf("IP:\t0x%04X\n", read_reg(cpu, IP));
+  printf("FL:\t0x%04X\n", read_reg(cpu, FL));
+  printf("SP:\t0x%04X\n", read_reg(cpu, SP));
   printf("\n");
 }
 
@@ -66,6 +69,7 @@ void translate(const char* pathname, u_word* output, const u_word lines) {
 }
 
 void run(CPU* cpu, int repeats) {
+  printRegisters(cpu);
   for(int i = 0; i < repeats; i++) {
     tick(cpu);
     printRegisters(cpu);

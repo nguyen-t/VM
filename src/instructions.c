@@ -84,6 +84,24 @@ static void li3(CPU* cpu, const I_FORMAT* ins) {
   write_reg(cpu, R3, current);
 }
 
+static void li4(CPU* cpu, const I_FORMAT* ins) {
+  u_word data = ins->i_type.immv;
+  u_word shift = ins->i_type.extra * 8;
+  u_word current = read_reg(cpu, R4);
+  current &= (0xFF00u >> shift);
+  current |= (data << shift);
+  write_reg(cpu, R4, current);
+}
+
+static void li5(CPU* cpu, const I_FORMAT* ins) {
+  u_word data = ins->i_type.immv;
+  u_word shift = ins->i_type.extra * 8;
+  u_word current = read_reg(cpu, R5);
+  current &= (0xFF00u >> shift);
+  current |= (data << shift);
+  write_reg(cpu, R5, current);
+}
+
 
 /* Read/write instructions */
 static void ldb(CPU* cpu, const I_FORMAT* ins) {
@@ -116,6 +134,22 @@ static void stw(CPU* cpu, const I_FORMAT* ins) {
   u_word address = read_reg(cpu, reg2);
   u_word data = read_reg(cpu, reg1);
   write_adr(cpu, address, data, sizeof(u_word));
+}
+
+static void psh(CPU* cpu, const I_FORMAT* ins) {
+  CPU_REGISTER reg2 = ins->r_type.reg2;
+  u_word address = read_reg(cpu, SP);
+  u_word data = read_reg(cpu, reg2);
+  write_adr(cpu, address, reg2, 2);
+  write_reg(cpu, SP, SP - 2);
+}
+
+static void pop(CPU* cpu, const I_FORMAT* ins) {
+  CPU_REGISTER reg2 = ins->r_type.reg2;
+  u_word address = read_reg(cpu, SP);
+  u_word data = read_adr(cpu, address + 2, 2);
+  write_reg(cpu, reg2, data);
+  write_reg(cpu, SP, SP - 2);
 }
 
 
@@ -210,17 +244,21 @@ static void div(CPU* cpu, const I_FORMAT* ins) {
 }
 
 static void lsl(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->m_type.reg0;
-  u_byte immv = ins->m_type.immv;
-  u_word data = read_reg(cpu, reg0);
-  write_reg(cpu, reg0, data << immv);
+  CPU_REGISTER reg0 = ins->r_type.reg0;
+  CPU_REGISTER reg1 = ins->r_type.reg1;
+  CPU_REGISTER reg2 = ins->r_type.reg2;
+  word data0 = read_reg(cpu, reg0);
+  word data1 = read_reg(cpu, reg1);
+  write_reg(cpu, reg2, data1 << data0);
 }
 
 static void lsr(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->m_type.reg0;
-  u_byte immv = ins->m_type.immv;
-  u_word data = read_reg(cpu, reg0);
-  write_reg(cpu, reg0, data >> immv);
+  CPU_REGISTER reg0 = ins->r_type.reg0;
+  CPU_REGISTER reg1 = ins->r_type.reg1;
+  CPU_REGISTER reg2 = ins->r_type.reg2;
+  word data0 = read_reg(cpu, reg0);
+  word data1 = read_reg(cpu, reg1);
+  write_reg(cpu, reg2, data1 >> data0);
 }
 
 void map_instructions(CPU* cpu){
@@ -238,11 +276,15 @@ void map_instructions(CPU* cpu){
   ins[0b0110001u] = &li1;
   ins[0b0110010u] = &li2;
   ins[0b0110011u] = &li3;
+  ins[0b0110100u] = &li4;
+  ins[0b0110101u] = &li5;
 
   ins[0b1000000u] = &ldb;
   ins[0b1000001u] = &ldw;
   ins[0b1000010u] = &stb;
   ins[0b1000011u] = &stw;
+  ins[0b1000100u] = &psh;
+  ins[0b1000101u] = &pop;
 
   ins[0b1100000u] = &cmp;
   ins[0b1100001u] = &not;

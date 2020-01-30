@@ -13,15 +13,14 @@ A very basic 16-bit RISC processor simulation written entirely in C11 without th
 > Big endian byte order compatibility</br>
 > Memory-mapped I/O</br>
 > Interrupts</br>
-> Protection for certain registers (e.g. IP)</br>
 > More instructions</br>
 > Assembler</br>
 
 ## Reference
 ```
-REGISTERS
-IP = 0b000  FL = 0b001  SP = 0b010  RT = 0b011
-R0 = 0b100  R1 = 0b101  R2 = 0b110  R3 = 0b111
+USER REGISTERS
+AD = 0b000 RT = 0b001 R0 = 0b010 R1 = 0b011
+R2 = 0b100 R3 = 0b101 R4 = 0b110 R5 = 0b111
 
 FORMATS
 S-Type = [15...9][9..0]                = [OPCODE][EXTRA]
@@ -44,11 +43,15 @@ OPCODE  OP  INPUTS                 DESCRIPTION
 0110001 li1 [immv]               = load [immv] into a register R1, half depends on extra bit (0: lower, 1: upper)
 0110010 li2 [immv]               = load [immv] into a register R2, half depends on extra bit (0: lower, 1: upper)
 0110011 li3 [immv]               = load [immv] into a register R3, half depends on extra bit (0: lower, 1: upper)
+0110011 li4 [immv]               = load [immv] into a register R4, half depends on extra bit (0: lower, 1: upper)
+0110011 li5 [immv]               = load [immv] into a register R5, half depends on extra bit (0: lower, 1: upper)
 
 1000000 ldb [reg2] [reg1] [reg0] = load byte at address [reg1] into [reg2]
 1000001 ldw [reg2] [reg1] [reg0] = load word at address [reg1] into [reg2]
 1000010 stb [reg2] [reg1] [reg0] = store byte at address [reg1] into [reg2]
 1000011 stw [reg2] [reg1] [reg0] = store word at address [reg1] into [reg2]
+1000100 psh [reg2] [reg1] [reg0] = push [reg2] onto top of the stack and SP += 2
+1000101 pop [reg2] [reg1] [reg0] = pop stack and store top in [reg2] and SP -= 2
 
 1100000 cmp [reg2] [reg1] [reg0] = compares [reg1] with [reg0] and sets register FL (signed)
 1100001 not [reg2] [reg1] [reg0] = binary not [reg1] and stores result in [reg2]
@@ -59,6 +62,6 @@ OPCODE  OP  INPUTS                 DESCRIPTION
 1100110 sub [reg2] [reg1] [reg0] = subtract [reg1] by [reg0] and stores result in [reg2]
 1100111 mul [reg2] [reg1] [reg0] = multiply [reg1] by [reg0] and stores result in [reg2]
 1101000 div [reg2] [reg1] [reg0] = divides [reg1] by [reg0] and stores result in [reg2]
-1101001 lsl [reg2] [immv]        = logical shift left [reg2] by [immv] bits
-1101010 lsr [reg2] [immv]        = logical shift right [reg2] by [immv] bits
+1101001 lsl [reg2] [reg1] [reg0] = logical shift left [reg1] by [reg0] and stores results in [reg2]
+1101010 lsr [reg2] [reg1] [reg0] = logical shift right [reg1] by [reg0] and stores results in [reg2]
 ```
