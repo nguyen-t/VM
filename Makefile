@@ -11,6 +11,7 @@ CC=gcc
 CFLAGS=-c -Werror -Wextra -I$(HDRDIR) -o
 LDFLAGS=-I$(HDRDIR) -o
 OUTPUT=vm
+ARGS=$(shell wc -l < $(TEST))
 
 .PHONY: run
 .PHONY: clean
@@ -19,7 +20,7 @@ OUTPUT=vm
 all: | $(OBJDIR) $(SRCDIR) $(HDRDIR) $(OUTPUT)
 
 run: $(OUTPUT)
-	./$(OUTPUT) $(TEST) $(shell wc -l < $(TEST))
+	./$(OUTPUT) $(TEST) $(ARGS)
 
 clean:
 	rm -r $(OBJECTS) $(OUTPUT)
