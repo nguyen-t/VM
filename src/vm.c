@@ -74,7 +74,7 @@ void run(CPU* cpu, int repeats) {
 
 int main(int argc, char** argv) {
   CPU cpu;
-  int length = strtol(argv[2], NULL, 10);
+  int length = strtol(argv[1], NULL, 10);
   u_word code[length];
 
   if(argc != 3) {
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
 
   cpu_reset(&cpu);
   map_instructions(&cpu);
-  translate(argv[1], code, length);
+  translate(argv[2], code, length);
   boot(&cpu, code, length);
   printAddressByte(&cpu, 0x0000, (length * 2) - 1);
   run(&cpu, 25);

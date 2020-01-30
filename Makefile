@@ -2,8 +2,8 @@ OBJDIR=objects
 SRCDIR=src
 HDRDIR=include
 TSTDIR=test
-INPUTS=vm instructions cpu
-DEPS=cpu instructions
+INPUTS=$(basename $(shell ls $(SRCDIR)))
+DEPS=$(basename $(shell ls $(HDRDIR)))
 OBJECTS=$(addprefix $(OBJDIR)/, $(addsuffix .o, $(INPUTS)))
 SOURCES=$(addprefix $(SRCDIR)/, $(addsuffix .c, $(INPUTS)))
 HEADERS=$(addprefix $(HDRDIR)/, $(addsuffix .h, $(DEPS)))
@@ -11,7 +11,7 @@ CC=gcc
 CFLAGS=-c -Werror -Wextra -I$(HDRDIR) -o
 LDFLAGS=-I$(HDRDIR) -o
 OUTPUT=vm
-ARGS=$(shell wc -l < test/store.txt)
+ARGS=$(shell wc -l test/store.txt)
 
 .PHONY: run
 .PHONY: clean
