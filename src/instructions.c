@@ -140,7 +140,7 @@ static void psh(CPU* cpu, const I_FORMAT* ins) {
   CPU_REGISTER reg2 = ins->r_type.reg2;
   u_word address = read_reg(cpu, SP);
   u_word data = read_reg(cpu, reg2);
-  write_adr(cpu, address, reg2, 2);
+  write_adr(cpu, address, data, 2);
   write_reg(cpu, SP, SP - 2);
 }
 
