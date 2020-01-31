@@ -4,37 +4,26 @@
 #include "instructions.h"
 
 void printRegisters(CPU* cpu) {
-  printf("AD:\t0x%04X\n", read_reg(cpu, AD));
-  printf("RT:\t0x%04X\n", read_reg(cpu, RT));
-  printf("R0:\t0x%04X\n", read_reg(cpu, R0));
-  printf("R1:\t0x%04X\n", read_reg(cpu, R1));
-  printf("R2:\t0x%04X\n", read_reg(cpu, R2));
-  printf("R3:\t0x%04X\n", read_reg(cpu, R3));
-  printf("R4:\t0x%04X\n", read_reg(cpu, R4));
-  printf("R5:\t0x%04X\n", read_reg(cpu, R5));
-  printf("IP:\t0x%04X\n", read_reg(cpu, IP));
-  printf("FL:\t0x%04X\n", read_reg(cpu, FL));
-  printf("SP:\t0x%04X\n", read_reg(cpu, SP));
+  printf("%-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s\n",
+    "R0", "R1", "R2", "R3", "R4", "R5", "AD", "RT", "IP", "FL", "SP");
+  printf("%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X\n",
+    read_reg(cpu, R0), read_reg(cpu, R1), read_reg(cpu, R2),
+    read_reg(cpu, R3), read_reg(cpu, R4), read_reg(cpu, R5),
+    read_reg(cpu, AD), read_reg(cpu, RT), 
+    read_reg(cpu, IP), read_reg(cpu, FL), read_reg(cpu, SP));
   printf("\n");
 }
 
 void printAddressByte(CPU* cpu, u_word start, u_word end) {
   for(u_word i = start; i <= end; i++) {
-    printf("0x%04X:\t0x%02X\n", i, cpu->address[i]);
+    printf("%04X: %02X\n", i, cpu->address[i]);
   }
   printf("\n");
 }
 
 void printAddressWord(CPU* cpu, u_word start, u_word end) {
   for(u_word i = start; i <= end; i += 2) {
-    printf("0x%04X:\t0x%04X\n", i, read_adr(cpu, i, sizeof(u_word)));
-  }
-  printf("\n");
-}
-
-void printInstructions(CPU* cpu) {
-  for(u_word i = 0; i < 128; i++) {
-    printf("0x%04X:\t%p\n", i, cpu->instructions[i]);
+    printf("%04X: %04X\n", i, read_adr(cpu, i, sizeof(u_word)));
   }
   printf("\n");
 }
