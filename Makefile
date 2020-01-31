@@ -13,9 +13,9 @@ LDFLAGS=-I$(HDRDIR) -o
 OUTPUT=vm
 ARGS=$(shell wc -l test/store.txt)
 
+.PHONY: all
 .PHONY: run
 .PHONY: clean
-.PHONY: all
 
 all: | $(HDRDIR) $(SRCDIR) $(OBJDIR) $(TSTDIR) $(OUTPUT)
 
