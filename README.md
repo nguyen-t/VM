@@ -8,11 +8,11 @@ A very basic 16-bit RISC processor simulation written entirely in C11 without th
 
 ## Planned Updates
 > Floating-point operations</br>
-> Big endian byte order compatibility</br>
+> Frame pointer</br>
 > Memory-mapped I/O</br>
 > Interrupts</br>
 > More instructions</br>
-> Assembler</br>
+> A more complex assembler</br>
 
 ## Reference
 ```
@@ -37,12 +37,20 @@ OPCODE  OP  INPUTS                 DESCRIPTION
 0100100 bgt [immv]               = jumps to relative address [immv] (signed) based on FL register
 0100101 blt [immv]               = jumps to relative address [immv] (signed) based on FL register
 
-0110000 li0 [immv]               = load [immv] into a register R0, half depends on extra bit (0: lower, 1: upper)
-0110001 li1 [immv]               = load [immv] into a register R1, half depends on extra bit (0: lower, 1: upper)
-0110010 li2 [immv]               = load [immv] into a register R2, half depends on extra bit (0: lower, 1: upper)
-0110011 li3 [immv]               = load [immv] into a register R3, half depends on extra bit (0: lower, 1: upper)
-0110011 li4 [immv]               = load [immv] into a register R4, half depends on extra bit (0: lower, 1: upper)
-0110011 li5 [immv]               = load [immv] into a register R5, half depends on extra bit (0: lower, 1: upper)
+0110000 ll0 [immv]               = load [immv] into a lower register R0, extra bit: 0
+0110000 lu0 [immv]               = load [immv] into a upper register R0, extra bit: 1
+0110001 ll1 [immv]               = load [immv] into a lower register R0, extra bit: 0
+0110001 lu1 [immv]               = load [immv] into a upper register R0, extra bit: 1
+0110010 ll2 [immv]               = load [immv] into a lower register R0, extra bit: 0
+0110010 lu2 [immv]               = load [immv] into a upper register R0, extra bit: 1
+0110011 ll3 [immv]               = load [immv] into a lower register R0, extra bit: 0
+0110011 lu3 [immv]               = load [immv] into a upper register R0, extra bit: 1
+0110100 ll4 [immv]               = load [immv] into a lower register R0, extra bit: 0
+0110100 lu4 [immv]               = load [immv] into a upper register R0, extra bit: 1
+0110101 ll5 [immv]               = load [immv] into a lower register R0, extra bit: 0
+0110101 lu5 [immv]               = load [immv] into a upper register R0, extra bit: 1
+0110110 lla [immv]               = load [immv] into a lower register AD, extra bit: 0
+0110110 lua [immv]               = load [immv] into a upper register AD, extra bit: 1
 
 1000000 ldb [reg2] [reg1] [reg0] = load byte at address [reg1] into [reg2]
 1000001 ldw [reg2] [reg1] [reg0] = load word at address [reg1] into [reg2]

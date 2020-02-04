@@ -54,10 +54,9 @@ u_word fetch(CPU* cpu) {
 }
 
 I_FORMAT decode(CPU* cpu, const u_word hex) {
-  I_FORMAT ins = (I_FORMAT) {
+  return (I_FORMAT) {
     .raw = hex
   };
-  return ins;
 }
 
 void execute(CPU* cpu, const I_FORMAT binary) {

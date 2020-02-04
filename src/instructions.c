@@ -102,6 +102,15 @@ static void li5(CPU* cpu, const I_FORMAT* ins) {
   write_reg(cpu, R5, current);
 }
 
+static void lia(CPU* cpu, const I_FORMAT* ins) {
+  u_word data = ins->i_type.immv;
+  u_word shift = ins->i_type.extra * 8;
+  u_word current = read_reg(cpu, AD);
+  current &= (0xFF00u >> shift);
+  current |= (data << shift);
+  write_reg(cpu, AD, current);
+}
+
 
 /* Read/write instructions */
 static void ldb(CPU* cpu, const I_FORMAT* ins) {
@@ -278,6 +287,7 @@ void map_instructions(CPU* cpu){
   ins[0b0110011u] = &li3;
   ins[0b0110100u] = &li4;
   ins[0b0110101u] = &li5;
+  ins[0b0110110u] = &lia;
 
   ins[0b1000000u] = &ldb;
   ins[0b1000001u] = &ldw;

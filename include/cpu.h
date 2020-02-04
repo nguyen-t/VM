@@ -22,9 +22,44 @@ enum cpu_register {
   R0, R1, R2, // General purpose registers
   R3, R4, R5, // General purpose registers
   AD, RT, // Special purpose registers
-  IP, FL, SP, // Special purpose registers, inaccessible
+  SP, FP, // Stack and frame registers, inaccessible
+  IP, FL, // Special purpose registers, inaccessible
 };
 
+#ifdef BIG_ENDIAN
+union i_format {
+  u_word raw; // Raw binary representation
+
+  /* Unused instruction format (opcode 0XXXXXX) */
+  struct {
+    u_word opcode: 7; // Bytes[9..15] = opcode
+    u_word extra: 9; // Bytes[0..8] = unused
+  } s_type;
+
+  /* Immediate-type instruction format (opcode 0XXXXXX) */
+  struct {
+    u_word opcode: 7; // Bytes[9..15] = opcode
+    u_word extra: 1; // Bytes[8..8] = register
+    u_word immv: 8; // Bytes[0..7] = register
+  } i_type;
+
+  /* Mixed-type instruction (opcode 1XXXXXX) */
+  struct {
+    u_word opcode: 7; // Bytes[9..15] = opcode
+    u_word reg0: 3; // Bytes[6..8] = register
+    u_word immv: 6; // Bytes[0..5] = register
+  } m_type;
+
+  /* Register-type instruction format (opcode 1XXXXXX) */
+  struct {
+    u_word opcode: 7; // Bytes[9..15] = opcode
+    u_word reg2: 3; // Bytes[6..8] = register
+    u_word reg1: 3; // Bytes[3..5] = register
+    u_word reg0: 3; // Bytes[0..2] = register
+  } r_type;
+};
+
+#else
 union i_format {
   u_word raw; // Raw binary representation
 
@@ -56,6 +91,7 @@ union i_format {
     u_word opcode: 7; // Bytes[9..15] = opcode
   } r_type;
 };
+#endif
 
 struct cpu {
   u_byte address[65536];
