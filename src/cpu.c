@@ -53,15 +53,16 @@ u_word fetch(CPU* cpu) {
   return hex;
 }
 
-I_FORMAT* decode(CPU* cpu, const u_word hex) {
-  return &((I_FORMAT) {
+I_FORMAT decode(CPU* cpu, const u_word hex) {
+  I_FORMAT ins = (I_FORMAT) {
     .raw = hex
-  });
+  };
+  return ins;
 }
 
-void execute(CPU* cpu, const I_FORMAT* binary) {
-  u_byte opcode = binary->s_type.opcode;
-  cpu->instructions[opcode](cpu, binary);
+void execute(CPU* cpu, const I_FORMAT binary) {
+  u_byte opcode = binary.s_type.opcode;
+  cpu->instructions[opcode](cpu, &binary);
 }
 
 void tick(CPU* cpu) {

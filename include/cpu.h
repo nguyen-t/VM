@@ -77,8 +77,8 @@ void write_adr(CPU* cpu, const u_word address, const u_word data, const u_byte b
 
 /* CPU clock functions */
 u_word fetch(CPU* cpu);
-I_FORMAT* decode(CPU* cpu, const u_word hex);
-void execute(CPU* cpu, const I_FORMAT* binary);
+I_FORMAT decode(CPU* cpu, const u_word hex);
+void execute(CPU* cpu, const I_FORMAT binary);
 void tick(CPU* cpu);
 
 #endif
