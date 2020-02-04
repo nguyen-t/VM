@@ -4,7 +4,7 @@ void cpu_reset(CPU* cpu) {
   for(unsigned int i = 0; i <= 0xFFFFu; i++) {
     write_adr(cpu, i, 0, 1);
   }
-  for(unsigned int i = 0; i < 11; i++) {
+  for(unsigned int i = 0; i < 12; i++) {
     write_reg(cpu, i, 0);
   }
   for(unsigned int i = 0; i < 128; i++) {
