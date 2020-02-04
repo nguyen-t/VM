@@ -9,7 +9,7 @@ void printRegisters(CPU* cpu) {
   printf("%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X\n",
     read_reg(cpu, R0), read_reg(cpu, R1), read_reg(cpu, R2),
     read_reg(cpu, R3), read_reg(cpu, R4), read_reg(cpu, R5),
-    read_reg(cpu, AD), read_reg(cpu, RT), 
+    read_reg(cpu, AD), read_reg(cpu, RT),
     read_reg(cpu, IP), read_reg(cpu, FL), read_reg(cpu, SP));
   printf("\n");
 }
