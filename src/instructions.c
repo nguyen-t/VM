@@ -234,14 +234,14 @@ static void lsr(CPU* cpu, const I_FORMAT* ins) {
 static void jmp(CPU* cpu, const I_FORMAT* ins) {
   CPU_REGISTER reg2 = ins->r_type.reg2;
   u_word current = read_reg(cpu, IP);
-  u_word offset = read_reg(cpu, reg2);
+  u_word offset = read_reg(cpu, reg2) - 2;
   write_reg(cpu, IP, current + offset);
 }
 
 static void jsr(CPU* cpu, const I_FORMAT* ins) {
   CPU_REGISTER reg2 = ins->r_type.reg2;
   u_word current = read_reg(cpu, IP);
-  u_word offset = read_reg(cpu, reg2);
+  u_word offset = read_reg(cpu, reg2) - 2;
   write_reg(cpu, RT, current);
   write_reg(cpu, IP, current + offset);
 }
@@ -250,8 +250,8 @@ static void beq(CPU* cpu, const I_FORMAT* ins) {
   CPU_REGISTER reg2 = ins->r_type.reg2;
   word data = read_reg(cpu, reg2);
   u_word current = read_reg(cpu, IP);
-  u_byte flag = (read_reg(cpu, FL) & 0x0001u) ? 1 : 0;
-  byte offset = flag * data;
+  u_word flag = (read_reg(cpu, FL) & 0x0001u) ? 1 : 0;
+  word offset = flag * (data - 2);
   write_reg(cpu, IP, current + offset);
 }
 
@@ -259,8 +259,8 @@ static void bgt(CPU* cpu, const I_FORMAT* ins) {
   CPU_REGISTER reg2 = ins->r_type.reg2;
   word data = read_reg(cpu, reg2);
   u_word current = read_reg(cpu, IP);
-  u_byte flag = (read_reg(cpu, FL) & 0x0002u) ? 1 : 0;
-  byte offset = flag * data;
+  u_word flag = (read_reg(cpu, FL) & 0x0002u) ? 1 : 0;
+  word  offset = flag * data;
   write_reg(cpu, IP, current + offset);
 }
 
@@ -268,8 +268,8 @@ static void blt(CPU* cpu, const I_FORMAT* ins) {
   CPU_REGISTER reg2 = ins->r_type.reg2;
   word data = read_reg(cpu, reg2);
   u_word current = read_reg(cpu, IP);
-  u_byte flag = (read_reg(cpu, FL) & 0x0004u) ? 1 : 0;
-  byte offset = flag * data;
+  u_word flag = (read_reg(cpu, FL) & 0x0004u) ? 1 : 0;
+  word offset = flag * (data - 2);
   write_reg(cpu, IP, current + offset);
 }
 
