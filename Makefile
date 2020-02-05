@@ -11,7 +11,7 @@ CC=gcc
 CFLAGS=-c -Wall -Wextra -O2 -I$(HDRDIR) -o
 LDFLAGS=-I$(HDRDIR) -o
 OUTPUT=vm
-ARGS=$(shell wc -l test/input.txt)
+ARGS=$(shell wc -l test/input)
 
 .PHONY: all
 .PHONY: run
