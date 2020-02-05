@@ -1,3 +1,2 @@
-ll0 10011001 # load lower-half
-lu0 10101010 # load upper-half
-hlt
+LI0 0xFFAA
+HLT
