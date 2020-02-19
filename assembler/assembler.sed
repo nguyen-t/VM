@@ -1,3 +1,4 @@
+# Translates instructions to machine code
 s/hlt/0000000/I;
 s/ll0/01000000/I;
 s/lu0/01000001/I;
@@ -36,6 +37,7 @@ s/beq/1110010/I;
 s/bgt/1110011/I;
 s/blt/1110100/I;
 
+# Translates register to machine code
 s/\$r0/000/I;
 s/\$r1/001/I;
 s/\$r2/010/I;
