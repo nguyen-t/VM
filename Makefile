@@ -11,6 +11,7 @@ CC=gcc
 CFLAGS=-c -Wall -Wextra -O2 -I$(HDRDIR) -o
 LDFLAGS=-I$(HDRDIR) -o
 OUTPUT=vm
+EXEC=
 ARGS=$(shell wc -l test/input)
 
 .PHONY: all
@@ -20,7 +21,7 @@ ARGS=$(shell wc -l test/input)
 all: | $(HDRDIR) $(SRCDIR) $(OBJDIR) $(TSTDIR) $(OUTPUT)
 
 run: $(OUTPUT)
-	./$(OUTPUT) $(TEST) $(ARGS)
+	$(EXEC) ./$(OUTPUT) $(ARGS)
 
 clean:
 	rm $(OBJECTS) $(OUTPUT)
