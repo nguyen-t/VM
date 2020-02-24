@@ -42,7 +42,7 @@ void translate(const char* pathname, u_word* output, const u_word lines) {
   }
 
   for(int i = 0; i < lines; i++) {
-    char* buffer;
+    char* buffer = NULL;
     getline(&buffer, &length, file);
     output[i] = strtol(buffer, NULL, 2);
     free(buffer);

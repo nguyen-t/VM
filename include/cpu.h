@@ -95,7 +95,7 @@ union i_format {
 
 struct cpu {
   u_byte address[65536];
-  u_word registers[11];
+  u_word registers[12];
   INSTRUCTION instructions[128];
 };
 
