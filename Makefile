@@ -9,7 +9,7 @@ SOURCES=$(addprefix $(SRCDIR)/, $(addsuffix .c, $(INPUTS)))
 OBJECTS=$(addprefix $(OBJDIR)/, $(addsuffix .o, $(INPUTS)))
 CC=gcc
 CFLAGS=-c -Wall -Wextra -O2 -I$(HDRDIR) -o
-LDFLAGS=-I$(HDRDIR) -fsanitize=undefined,address -o
+LDFLAGS=-I$(HDRDIR) -fsanitize=undefined,address,leak -o
 OUTPUT=vm
 EXEC=exec
 ARGS=$(shell wc -l test/input)

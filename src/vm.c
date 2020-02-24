@@ -51,9 +51,10 @@ void translate(const char* pathname, u_word* output, const u_word lines) {
   fclose(file);
 }
 
-void run(CPU* cpu, int repeats) {
+void run(CPU* cpu) {
   printRegisters(cpu);
-  for(int i = 0; i < repeats; i++) {
+  while(1) {
+    while(getchar() != '\n');
     tick(cpu);
     printRegisters(cpu);
   }
@@ -73,5 +74,5 @@ int main(int argc, char** argv) {
   translate(argv[2], code, length);
   boot(&cpu, code, length);
   printAddressByte(&cpu, 0x0000, (length * 2) - 1);
-  run(&cpu, 25);
+  run(&cpu);
 }
