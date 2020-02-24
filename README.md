@@ -38,27 +38,27 @@ INSTRUCTION SET
 OPCODE  OP  INPUTS                 DESCRIPTION
 0000000 hlt [NONE]               = stops the processor
 
-0100000 ll0 [immv]               = load [immv] into a lower register R0, extra bit: 0
-0100000 lu0 [immv]               = load [immv] into a upper register R0, extra bit: 1
-0100001 ll1 [immv]               = load [immv] into a lower register R0, extra bit: 0
-0100001 lu1 [immv]               = load [immv] into a upper register R0, extra bit: 1
-0100010 ll2 [immv]               = load [immv] into a lower register R0, extra bit: 0
-0100010 lu2 [immv]               = load [immv] into a upper register R0, extra bit: 1
-0100011 ll3 [immv]               = load [immv] into a lower register R0, extra bit: 0
-0100011 lu3 [immv]               = load [immv] into a upper register R0, extra bit: 1
-0100100 ll4 [immv]               = load [immv] into a lower register R0, extra bit: 0
-0100100 lu4 [immv]               = load [immv] into a upper register R0, extra bit: 1
-0100101 ll5 [immv]               = load [immv] into a lower register R0, extra bit: 0
-0100101 lu5 [immv]               = load [immv] into a upper register R0, extra bit: 1
-0100110 lla [immv]               = load [immv] into a lower register AD, extra bit: 0
-0100110 lua [immv]               = load [immv] into a upper register AD, extra bit: 1
+0100000 ll0 [immv]               = load [immv] into a lower $R0, extra bit: 0
+0100000 lu0 [immv]               = load [immv] into a upper $R0, extra bit: 1
+0100001 ll1 [immv]               = load [immv] into a lower $R1, extra bit: 0
+0100001 lu1 [immv]               = load [immv] into a upper $R1, extra bit: 1
+0100010 ll2 [immv]               = load [immv] into a lower $R2, extra bit: 0
+0100010 lu2 [immv]               = load [immv] into a upper $R2, extra bit: 1
+0100011 ll3 [immv]               = load [immv] into a lower $R3, extra bit: 0
+0100011 lu3 [immv]               = load [immv] into a upper $R3, extra bit: 1
+0100100 ll4 [immv]               = load [immv] into a lower $R4, extra bit: 0
+0100100 lu4 [immv]               = load [immv] into a upper $R4, extra bit: 1
+0100101 ll5 [immv]               = load [immv] into a lower $R5, extra bit: 0
+0100101 lu5 [immv]               = load [immv] into a upper $R5, extra bit: 1
+0100110 lla [immv]               = load [immv] into a lower $AD, extra bit: 0
+0100110 lua [immv]               = load [immv] into a upper $AD, extra bit: 1
 
 1000000 ldb [reg2] [reg1] [reg0] = load byte at address [reg1] into [reg2]
 1000001 ldw [reg2] [reg1] [reg0] = load word at address [reg1] into [reg2]
 1000010 stb [reg2] [reg1] [reg0] = store byte at address [reg1] into [reg2]
 1000011 stw [reg2] [reg1] [reg0] = store word at address [reg1] into [reg2]
-1000100 psh [reg2] [reg1] [reg0] = push [reg2] onto top of the stack and SP += 2
-1000101 pop [reg2] [reg1] [reg0] = pop stack and store top in [reg2] and SP -= 2
+1000100 psh [reg2] [reg1] [reg0] = push [reg2] onto top of the stack and $SP += 2
+1000101 pop [reg2] [reg1] [reg0] = pop stack and store top in [reg2] and $SP -= 2
 
 1100000 cmp [reg2] [reg1] [reg0] = compares [reg1] with [reg0] and sets register FL (signed)
 1100001 not [reg2] [reg1] [reg0] = binary not [reg1] and stores result in [reg2]
@@ -73,8 +73,8 @@ OPCODE  OP  INPUTS                 DESCRIPTION
 1101010 lsr [reg2] [reg1] [reg0] = logical shift right [reg1] by [reg0] and stores results in [reg2]
 
 1110000 jmp [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount
-1110001 jsr [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount and sets RT = IP + 2
-1110010 beq [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on FL register
-1110011 bgt [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on FL register
-1110100 blt [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on FL register
+1110001 jsr [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount and sets $RT = $IP + 2
+1110010 beq [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on $FL
+1110011 bgt [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on $FL
+1110100 blt [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on $FL
 ```
