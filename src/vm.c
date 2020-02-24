@@ -3,6 +3,10 @@
 #include "cpu.h"
 #include "instructions.h"
 
+enum step_mode {
+  AUTO = 0, MANUAL = 1
+};
+
 void printRegisters(CPU* cpu) {
   printf("%-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s\n",
     "R0", "R1", "R2", "R3", "R4", "R5", "AD", "RT", "IP", "FL", "SP");
@@ -51,10 +55,10 @@ void translate(const char* pathname, u_word* output, const u_word lines) {
   fclose(file);
 }
 
-void run(CPU* cpu) {
+void run(CPU* cpu, enum step_mode mode) {
   printRegisters(cpu);
   while(1) {
-    while(getchar() != '\n');
+    while(mode && getchar() != '\n');
     tick(cpu);
     printRegisters(cpu);
   }
@@ -74,5 +78,5 @@ int main(int argc, char** argv) {
   translate(argv[2], code, length);
   boot(&cpu, code, length);
   printAddressByte(&cpu, 0x0000, (length * 2) - 1);
-  run(&cpu);
+  run(&cpu, MANUAL);
 }
