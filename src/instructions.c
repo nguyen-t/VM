@@ -275,38 +275,38 @@ static void blt(CPU* cpu, const I_FORMAT* ins) {
 
 void map_instructions(CPU* cpu){
   INSTRUCTION* ins = cpu->instructions;
-  ins[0b0000000u] = &hlt;
+  ins[0x00u] = &hlt; // 0000000
 
-  ins[0b0100000u] = &li0;
-  ins[0b0100001u] = &li1;
-  ins[0b0100010u] = &li2;
-  ins[0b0100011u] = &li3;
-  ins[0b0100100u] = &li4;
-  ins[0b0100101u] = &li5;
-  ins[0b0100110u] = &lia;
+  ins[0x10u] = &li0; // 0010000
+  ins[0x11u] = &li1; // 0010001
+  ins[0x12u] = &li2; // 0010010
+  ins[0x13u] = &li3; // 0010011
+  ins[0x14u] = &li4; // 0010100
+  ins[0x15u] = &li5; // 0010101
+  ins[0x16u] = &lia; // 0010110
 
-  ins[0b1000000u] = &ldb;
-  ins[0b1000001u] = &ldw;
-  ins[0b1000010u] = &stb;
-  ins[0b1000011u] = &stw;
-  ins[0b1000100u] = &psh;
-  ins[0b1000101u] = &pop;
+  ins[0x20u] = &ldb; // 0100000
+  ins[0x21u] = &ldw; // 0100001
+  ins[0x22u] = &stb; // 0100010
+  ins[0x23u] = &stw; // 0100011
+  ins[0x24u] = &psh; // 0100100
+  ins[0x25u] = &pop; // 0100101
 
-  ins[0b1100000u] = &cmp;
-  ins[0b1100001u] = &not;
-  ins[0b1100010u] = &orr;
-  ins[0b1100011u] = &and;
-  ins[0b1100100u] = &xor;
-  ins[0b1100101u] = &add;
-  ins[0b1100110u] = &sub;
-  ins[0b1100111u] = &mul;
-  ins[0b1101000u] = &div;
-  ins[0b1101001u] = &lsl;
-  ins[0b1101010u] = &lsr;
+  ins[0x30u] = &cmp; // 0110000
+  ins[0x31u] = &not; // 0110001
+  ins[0x32u] = &orr; // 0110010
+  ins[0x33u] = &and; // 0110011
+  ins[0x34u] = &xor; // 0110100
+  ins[0x35u] = &add; // 0110101
+  ins[0x36u] = &sub; // 0110110
+  ins[0x37u] = &mul; // 0110111
+  ins[0x38u] = &div; // 0111000
+  ins[0x39u] = &lsl; // 0111001
+  ins[0x3Au] = &lsr; // 0111010
 
-  ins[0b1110000u] = &jmp;
-  ins[0b1110001u] = &jsr;
-  ins[0b1110010u] = &beq;
-  ins[0b1110011u] = &bgt;
-  ins[0b1110100u] = &blt;
+  ins[0x40u] = &jmp; // 1000000
+  ins[0x41u] = &jsr; // 1000001
+  ins[0x42u] = &beq; // 1000010
+  ins[0x43u] = &bgt; // 1000011
+  ins[0x44u] = &blt; // 1000100
 }
