@@ -8,9 +8,9 @@ enum step_mode {
   AUTO = 0, MANUAL = 1
 };
 
-char peek(void) {
+char fpeek(FILE* file) {
   char c = fgetc(stdin);
-  ungetc(c, stdin);
+  ungetc(c, file);
 
   return c;
 }
@@ -27,7 +27,7 @@ void printRegisters(CPU* cpu) {
 }
 
 void printAddressByte(CPU* cpu, u_word start, u_word end) {
-  if(start < end) {
+  if(start > end) {
     return;
   }
 
@@ -67,7 +67,7 @@ void run(CPU* cpu, enum step_mode mode) {
       u_word start;
       u_word end;
 
-      if(peek() != '\n') {
+      if(fpeek(stdin) != '\n') {
         scanf("%[^\n]", buffer);
         if(sscanf(buffer, "%hx %hd", &start, &end) == 2) {
           printAddressByte(cpu, start, end);
