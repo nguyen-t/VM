@@ -11,14 +11,18 @@ void cpu_reset(CPU* cpu) {
     cpu->instructions[i] = NULL;
   }
 
-  write_reg(cpu, SP, STACK);
+  write_reg(cpu, SP, ADDRESS_STACK);
+  write_reg(cpu, FP, ADDRESS_STACK);
+  write_reg(cpu, IP, ADDRESS_ROM);
+  write_reg(cpu, FL, 0x0000u);
 }
 
 void boot(CPU* cpu, const u_word* code, const u_word length) {
   u_word size = sizeof(u_word);
 
   for(int i = 0; i < length; i++) {
-    write_adr(cpu, size * i, code[i], size);
+    cpu->address[ADDRESS_ROM + i * size + 0] = code[i] >> 8;
+    cpu->address[ADDRESS_ROM + i * size + 1] = code[i] >> 0;
   }
 }
 
@@ -53,15 +57,15 @@ u_word fetch(CPU* cpu) {
   return hex;
 }
 
-I_FORMAT decode(CPU* cpu, const u_word hex) {
-  return (I_FORMAT) {
+OP decode(CPU* cpu, const u_word hex) {
+  return (OP) {
     .raw = hex
   };
 }
 
-void execute(CPU* cpu, const I_FORMAT binary) {
+void execute(CPU* cpu, const OP binary) {
   u_byte opcode = binary.s_type.opcode;
-  cpu->instructions[opcode](cpu, &binary);
+  cpu->instructions[opcode](cpu, binary);
 }
 
 void tick(CPU* cpu) {

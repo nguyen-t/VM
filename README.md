@@ -30,13 +30,13 @@ FL: Flag register
 
 FORMATS
 S-Type = [15...9][9..0]                = [OPCODE][EXTRA]
-I-Type = [15...9][8...8][7...0]        = [OPCODE][EXTRA][IMMEDIATE]
+I-Type = [15...9][8...8][7...0]        = [OPCODE][HALF][IMMEDIATE]
 M-Type = [15...9][8...6][5...0]        = [OPCODE][REGISTER][IMMEDIATE]
 R-Type = [15...9][8...6][5...3][2...0] = [OPCODE][REGISTER][REGISTER][REGISTER]
 
 INSTRUCTION SET
 OPCODE  OP  INPUTS                 DESCRIPTION
-0000000 hlt [NONE]               = stops the processor
+0000000 hlt [NONE]               = stops the processor until interrupt
 
 0010000 ll0 [immv]               = load [immv] into a lower $R0, extra bit: 0
 0010000 lu0 [immv]               = load [immv] into a upper $R0, extra bit: 1

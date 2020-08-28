@@ -5,29 +5,26 @@
 #define NULL (void*) 0
 #endif
 
-#ifndef STACK
-#define STACK 0xFFFEu
-#endif
+#define ADDRESS_RAM   0x0000u
+#define ADDRESS_ROM   0xD000u
+#define ADDRESS_STACK 0xFFFEu
 
 typedef signed char byte;
 typedef signed short word;
 typedef unsigned char u_byte;
 typedef unsigned short u_word;
-typedef enum cpu_register CPU_REGISTER;
-typedef union i_format I_FORMAT;
 typedef struct cpu CPU;
-typedef void (*INSTRUCTION)(CPU*, const I_FORMAT*);
 
-enum cpu_register {
+typedef enum cpu_register {
   R0, R1, R2, // General purpose registers
   R3, R4, R5, // General purpose registers
   AD, RT, // Special purpose registers
   SP, FP, // Stack and frame registers, inaccessible
   IP, FL, // Special purpose registers, inaccessible
-};
+} CPU_REGISTER;
 
 #ifdef BIG_ENDIAN
-union i_format {
+typedef union op {
   u_word raw; // Raw binary representation
 
   /* Unused instruction format (opcode 0XXXXXX) */
@@ -39,16 +36,9 @@ union i_format {
   /* Immediate-type instruction format (opcode 0XXXXXX) */
   struct {
     u_word opcode: 7; // Bytes[9..15] = opcode
-    u_word extra: 1; // Bytes[8..8] = register
+    u_word half: 1; // Bytes[8..8] = half
     u_word immv: 8; // Bytes[0..7] = register
   } i_type;
-
-  /* Mixed-type instruction (opcode 1XXXXXX) */
-  struct {
-    u_word opcode: 7; // Bytes[9..15] = opcode
-    u_word reg0: 3; // Bytes[6..8] = register
-    u_word immv: 6; // Bytes[0..5] = register
-  } m_type;
 
   /* Register-type instruction format (opcode 1XXXXXX) */
   struct {
@@ -57,10 +47,10 @@ union i_format {
     u_word reg1: 3; // Bytes[3..5] = register
     u_word reg0: 3; // Bytes[0..2] = register
   } r_type;
-};
+} OP;
 
 #else
-union i_format {
+typedef union op {
   u_word raw; // Raw binary representation
 
   /* Unused instruction format (opcode 0XXXXXX) */
@@ -72,16 +62,9 @@ union i_format {
   /* Immediate-type instruction format (opcode 0XXXXXX) */
   struct {
     u_word immv: 8; // Bytes[0..7] = register
-    u_word extra: 1; // Bytes[8..8] = register
+    u_word half: 1; // Bytes[8..8] = half
     u_word opcode: 7; // Bytes[9..15] = opcode
   } i_type;
-
-  /* Mixed-type instruction (opcode 1XXXXXX) */
-  struct {
-    u_word immv: 6; // Bytes[0..5] = register
-    u_word reg0: 3; // Bytes[6..8] = register
-    u_word opcode: 7; // Bytes[9..15] = opcode
-  } m_type;
 
   /* Register-type instruction format (opcode 1XXXXXX) */
   struct {
@@ -90,8 +73,10 @@ union i_format {
     u_word reg2: 3; // Bytes[6..8] = register
     u_word opcode: 7; // Bytes[9..15] = opcode
   } r_type;
-};
+} OP;
 #endif
+
+typedef void (*INSTRUCTION)(CPU*, const OP);
 
 struct cpu {
   u_byte address[65536];
@@ -113,8 +98,8 @@ void write_adr(CPU* cpu, const u_word address, const u_word data, const u_byte b
 
 /* CPU clock functions */
 u_word fetch(CPU* cpu);
-I_FORMAT decode(CPU* cpu, const u_word hex);
-void execute(CPU* cpu, const I_FORMAT binary);
+OP decode(CPU* cpu, const u_word hex);
+void execute(CPU* cpu, const OP binary);
 void tick(CPU* cpu);
 
 #endif

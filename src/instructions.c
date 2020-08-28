@@ -1,69 +1,68 @@
 #include "instructions.h"
 
 /* Special instructions */
-static void hlt(CPU* cpu, const I_FORMAT* ins) {
-  while(1);
+static void hlt(CPU* cpu, const OP ins) {
+  while(1); // TODO: Wait for interrupt
 }
 
-
 /* Register management instrucions */
-static void li0(CPU* cpu, const I_FORMAT* ins) {
-  u_word data = ins->i_type.immv;
-  u_word shift = ins->i_type.extra * 8;
+static void li0(CPU* cpu, const OP ins) {
+  u_word data = ins.i_type.immv;
+  u_word shift = ins.i_type.half * 8;
   u_word current = read_reg(cpu, R0);
   current &= (0xFF00u >> shift);
   current |= (data << shift);
   write_reg(cpu, R0, current);
 }
 
-static void li1(CPU* cpu, const I_FORMAT* ins) {
-  u_word data = ins->i_type.immv;
-  u_word shift = ins->i_type.extra * 8;
+static void li1(CPU* cpu, const OP ins) {
+  u_word data = ins.i_type.immv;
+  u_word shift = ins.i_type.half * 8;
   u_word current = read_reg(cpu, R1);
   current &= (0xFF00u >> shift);
   current |= (data << shift);
   write_reg(cpu, R1, current);
 }
 
-static void li2(CPU* cpu, const I_FORMAT* ins) {
-  u_word data = ins->i_type.immv;
-  u_word shift = ins->i_type.extra * 8;
+static void li2(CPU* cpu, const OP ins) {
+  u_word data = ins.i_type.immv;
+  u_word shift = ins.i_type.half * 8;
   u_word current = read_reg(cpu, R2);
   current &= (0xFF00u >> shift);
   current |= (data << shift);
   write_reg(cpu, R2, current);
 }
 
-static void li3(CPU* cpu, const I_FORMAT* ins) {
-  u_word data = ins->i_type.immv;
-  u_word shift = ins->i_type.extra * 8;
+static void li3(CPU* cpu, const OP ins) {
+  u_word data = ins.i_type.immv;
+  u_word shift = ins.i_type.half * 8;
   u_word current = read_reg(cpu, R3);
   current &= (0xFF00u >> shift);
   current |= (data << shift);
   write_reg(cpu, R3, current);
 }
 
-static void li4(CPU* cpu, const I_FORMAT* ins) {
-  u_word data = ins->i_type.immv;
-  u_word shift = ins->i_type.extra * 8;
+static void li4(CPU* cpu, const OP ins) {
+  u_word data = ins.i_type.immv;
+  u_word shift = ins.i_type.half * 8;
   u_word current = read_reg(cpu, R4);
   current &= (0xFF00u >> shift);
   current |= (data << shift);
   write_reg(cpu, R4, current);
 }
 
-static void li5(CPU* cpu, const I_FORMAT* ins) {
-  u_word data = ins->i_type.immv;
-  u_word shift = ins->i_type.extra * 8;
+static void li5(CPU* cpu, const OP ins) {
+  u_word data = ins.i_type.immv;
+  u_word shift = ins.i_type.half * 8;
   u_word current = read_reg(cpu, R5);
   current &= (0xFF00u >> shift);
   current |= (data << shift);
   write_reg(cpu, R5, current);
 }
 
-static void lia(CPU* cpu, const I_FORMAT* ins) {
-  u_word data = ins->i_type.immv;
-  u_word shift = ins->i_type.extra * 8;
+static void lia(CPU* cpu, const OP ins) {
+  u_word data = ins.i_type.immv;
+  u_word shift = ins.i_type.half * 8;
   u_word current = read_reg(cpu, AD);
   current &= (0xFF00u >> shift);
   current |= (data << shift);
@@ -72,48 +71,48 @@ static void lia(CPU* cpu, const I_FORMAT* ins) {
 
 
 /* Read/write instructions */
-static void ldb(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void ldb(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word address = read_reg(cpu, reg1);
   u_word data = read_adr(cpu, address, 1);
   write_reg(cpu, reg2, data);
 }
 
-static void ldw(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void ldw(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word address = read_reg(cpu, reg1);
   u_word data = read_adr(cpu, address, sizeof(u_word));
   write_reg(cpu, reg2, data);
 }
 
-static void stb(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void stb(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word address = read_reg(cpu, reg2);
   u_word data = read_reg(cpu, reg1);
   write_adr(cpu, address, data, 1);
 }
 
-static void stw(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void stw(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word address = read_reg(cpu, reg2);
   u_word data = read_reg(cpu, reg1);
   write_adr(cpu, address, data, sizeof(u_word));
 }
 
-static void psh(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void psh(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word address = read_reg(cpu, SP);
   u_word data = read_reg(cpu, reg2);
   write_adr(cpu, address, data, 2);
   write_reg(cpu, SP, SP - 2);
 }
 
-static void pop(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void pop(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word address = read_reg(cpu, SP);
   u_word data = read_adr(cpu, address + 2, 2);
   write_reg(cpu, reg2, data);
@@ -122,9 +121,9 @@ static void pop(CPU* cpu, const I_FORMAT* ins) {
 
 
 /* Arithmetic instrucions */
-static void cmp(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
+static void cmp(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
   u_word flag = read_reg(cpu, FL) & 0x0FF8u;
   word data0 = read_reg(cpu, reg0);
   word data1 = read_reg(cpu, reg1);
@@ -141,89 +140,89 @@ static void cmp(CPU* cpu, const I_FORMAT* ins) {
   write_reg(cpu, FL, flag);
 }
 
-static void not(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void not(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word data = read_reg(cpu, reg1);
   write_reg(cpu, reg2, ~data);
 }
 
-static void orr(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void orr(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word data0 = read_reg(cpu, reg0);
   u_word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 | data0);
 }
 
-static void and(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void and(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word data0 = read_reg(cpu, reg0);
   u_word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 & data0);
 }
 
-static void xor(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void xor(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word data0 = read_reg(cpu, reg0);
   u_word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 ^ data0);
 }
 
-static void add(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void add(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data0 = read_reg(cpu, reg0);
   word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 + data0);
 }
 
-static void sub(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void sub(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data0 = read_reg(cpu, reg0);
   word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 - data0);
 }
 
-static void mul(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void mul(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data0 = read_reg(cpu, reg0);
   word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 * data0);
 }
 
-static void div(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void div(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data0 = read_reg(cpu, reg0);
   word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 / data0);
 }
 
-static void lsl(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void lsl(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data0 = read_reg(cpu, reg0);
   word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 << data0);
 }
 
-static void lsr(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg0 = ins->r_type.reg0;
-  CPU_REGISTER reg1 = ins->r_type.reg1;
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void lsr(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg0 = ins.r_type.reg0;
+  CPU_REGISTER reg1 = ins.r_type.reg1;
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data0 = read_reg(cpu, reg0);
   word data1 = read_reg(cpu, reg1);
   write_reg(cpu, reg2, data1 >> data0);
@@ -231,23 +230,23 @@ static void lsr(CPU* cpu, const I_FORMAT* ins) {
 
 
 /* Control instructions */
-static void jmp(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void jmp(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word current = read_reg(cpu, IP);
   u_word offset = read_reg(cpu, reg2) - 2;
   write_reg(cpu, IP, current + offset);
 }
 
-static void jsr(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void jsr(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   u_word current = read_reg(cpu, IP);
   u_word offset = read_reg(cpu, reg2) - 2;
   write_reg(cpu, RT, current);
   write_reg(cpu, IP, current + offset);
 }
 
-static void beq(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void beq(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data = read_reg(cpu, reg2);
   u_word current = read_reg(cpu, IP);
   u_word flag = (read_reg(cpu, FL) & 0x0001u) ? 1 : 0;
@@ -255,8 +254,8 @@ static void beq(CPU* cpu, const I_FORMAT* ins) {
   write_reg(cpu, IP, current + offset);
 }
 
-static void bgt(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void bgt(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data = read_reg(cpu, reg2);
   u_word current = read_reg(cpu, IP);
   u_word flag = (read_reg(cpu, FL) & 0x0002u) ? 1 : 0;
@@ -264,8 +263,8 @@ static void bgt(CPU* cpu, const I_FORMAT* ins) {
   write_reg(cpu, IP, current + offset);
 }
 
-static void blt(CPU* cpu, const I_FORMAT* ins) {
-  CPU_REGISTER reg2 = ins->r_type.reg2;
+static void blt(CPU* cpu, const OP ins) {
+  CPU_REGISTER reg2 = ins.r_type.reg2;
   word data = read_reg(cpu, reg2);
   u_word current = read_reg(cpu, IP);
   u_word flag = (read_reg(cpu, FL) & 0x0004u) ? 1 : 0;

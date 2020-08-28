@@ -1,9 +1,9 @@
 # Edit to fit needs
-CC = gcc
+CC = clang
 LIBS =
 DEFINES =
 SANS = undefined,address,leak
-WARNS = all pedantic extra
+WARNS = all pedantic extra no-unused-parameter
 OPTIMIZE = -O3
 OUTPUT = vm
 EXEC = exec

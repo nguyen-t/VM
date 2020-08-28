@@ -1,11 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "cpu.h"
 #include "instructions.h"
 
 enum step_mode {
   AUTO = 0, MANUAL = 1
 };
+
+char peek(void) {
+  char c = fgetc(stdin);
+  ungetc(c, stdin);
+
+  return c;
+}
 
 void printRegisters(CPU* cpu) {
   printf("%-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s %-4s\n",
@@ -19,15 +27,16 @@ void printRegisters(CPU* cpu) {
 }
 
 void printAddressByte(CPU* cpu, u_word start, u_word end) {
-  for(u_word i = start; i <= end; i++) {
-    printf("%04X: %02X\n", i, cpu->address[i]);
+  if(start < end) {
+    return;
   }
-  printf("\n");
-}
 
-void printAddressWord(CPU* cpu, u_word start, u_word end) {
-  for(u_word i = start; i <= end; i += 2) {
-    printf("%04X: %04X\n", i, read_adr(cpu, i, sizeof(u_word)));
+  for(uint64_t i = start; i <= end; i += 16) {
+    printf("%04lX: ", i);
+    for(uint64_t j = i; j < i + 16 && j <= end; j++) {
+      printf("%02X ", cpu->address[j]);
+    }
+    printf("\n");
   }
   printf("\n");
 }
@@ -35,10 +44,6 @@ void printAddressWord(CPU* cpu, u_word start, u_word end) {
 void translate(const char* pathname, u_word* output, const u_word lines) {
   FILE* file;
   size_t length = 0;
-
-  if(lines < 1) {
-    return;
-  }
 
   if((file = fopen(pathname, "r")) == NULL) {
     printf("Cannot open %s\n", pathname);
@@ -56,9 +61,20 @@ void translate(const char* pathname, u_word* output, const u_word lines) {
 }
 
 void run(CPU* cpu, enum step_mode mode) {
-  printRegisters(cpu);
   while(1) {
-    while(mode && getchar() != '\n');
+    if(mode) {
+      char buffer[16];
+      u_word start;
+      u_word end;
+
+      if(peek() != '\n') {
+        scanf("%[^\n]", buffer);
+        if(sscanf(buffer, "%hx %hd", &start, &end) == 2) {
+          printAddressByte(cpu, start, end);
+        }
+      }
+      fgetc(stdin);
+    }
     tick(cpu);
     printRegisters(cpu);
   }
@@ -77,6 +93,5 @@ int main(int argc, char** argv) {
   map_instructions(&cpu);
   translate(argv[2], code, length);
   boot(&cpu, code, length);
-  printAddressByte(&cpu, 0x0000, (length * 2) - 1);
   run(&cpu, MANUAL);
 }
