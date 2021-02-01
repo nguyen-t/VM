@@ -31,7 +31,6 @@ FL: Flag register
 FORMATS
 S-Type = [15...9][9..0]                = [OPCODE][EXTRA]
 I-Type = [15...9][8...8][7...0]        = [OPCODE][HALF][IMMEDIATE]
-M-Type = [15...9][8...6][5...0]        = [OPCODE][REGISTER][IMMEDIATE]
 R-Type = [15...9][8...6][5...3][2...0] = [OPCODE][REGISTER][REGISTER][REGISTER]
 
 INSTRUCTION SET
@@ -73,7 +72,7 @@ OPCODE  OP  INPUTS                 DESCRIPTION
 0111010 lsr [reg2] [reg1] [reg0] = logical shift right [reg1] by [reg0] and stores results in [reg2]
 
 1000000 jmp [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount
-1000001 jsr [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount and sets $RT = $IP + 2
+1000001 jpr [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount and sets $RT = $IP + 2
 1000010 beq [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on $FL
 1000011 bgt [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on $FL
 1000100 blt [reg2] [reg1] [reg0] = jumps by [reg2] (signed) amount based on $FL
